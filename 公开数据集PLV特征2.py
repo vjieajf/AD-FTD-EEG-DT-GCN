@@ -348,24 +348,14 @@ for sub_idx, sub_id in enumerate(range(1, 89)):
     n_samples = EEG_data.shape[2]  # 每段样本数
 
     pearson_results = []
-    # 遍历分段
     for epoch_idx in range(n_epochs):
         # 提取当前分段的信号
         segment = EEG_data[:, epoch_idx, :]
-
-        # 对每个通道进行FFT处理
-        fft_segment = np.zeros_like(segment, dtype=complex)
-        for channel in range(n_channels):
-            fft_segment[channel, :] = fft(segment[channel, :])
-
-        # 取FFT后的实值部分
-        real_fft_segment = np.real(fft_segment)
-
         # 计算修正版部分相关系数矩阵（控制参考通道干扰）
         # 采用Poli等人(2014)方法，假设第0个通道为参考通道
-        corr_matrix = compute_partial_correlation(real_fft_segment, reference_channel_idx=0)
+        corr_matrix = compute_partial_correlation(segment, reference_channel_idx=0)
         pearson_results.append(corr_matrix)
-
+        
     # 计算平均皮尔逊相关系数矩阵
     avg_pearson_matrix = np.mean(np.array(pearson_results), axis=0)
 
@@ -412,4 +402,5 @@ for sub_idx, sub_id in enumerate(range(1, 89)):
         # 保存当前数组到文件
         np.savetxt(file, avg_pearson_matrix, fmt="%.6f", delimiter="\t")
         # 添加一个空行以分隔不同的数组（可选）
+
         file.write("\n")
