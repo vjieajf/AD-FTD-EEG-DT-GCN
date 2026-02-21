@@ -420,19 +420,10 @@ for sub_idx, sub_id in enumerate(range(1, 89)):
 
     # 遍历所有epoch
     for epoch_idx in range(n_epochs):
-        # 获取当前epoch的脑电数据（形状：[通道数, 样本数]）
         epoch_data = EEG_data[:, epoch_idx, :]
-
-        # 对每个通道进行FFT处理
-        fft_segment = np.zeros_like(epoch_data, dtype=complex)
-        for channel in range(n_channels):
-            fft_segment[channel, :] = fft(epoch_data[channel, :])
-
-        # 计算copula矩阵
-        gc_matrix = compute_copula_matrix(fft_segment, gumbel_copula, initial_theta=1.0, bounds=[(1, 10)])
-
+        gc_matrix = compute_copula_matrix(epoch_data, gumbel_copula, initial_theta=1.0, bounds=[(1, 10)])
         copula_results.append(gc_matrix)
-
+        
     # 计算平均并替换 NaN 为 0
     avg_copula_matrix = np.nan_to_num(np.mean(np.abs(np.array(copula_results)), axis=0))
     """
@@ -517,4 +508,5 @@ frank_copula_mat = compute_copula_matrix(epoch_data, frank_copula, initial_theta
 
 # 计算Clayton Copula矩阵
 clayton_copula_mat = compute_copula_matrix(epoch_data, clayton_copula, initial_theta=0.5, bounds=[(0, 10)])
+
 """
