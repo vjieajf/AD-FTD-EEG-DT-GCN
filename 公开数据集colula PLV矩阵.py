@@ -406,10 +406,10 @@ for sub_idx, sub_id in enumerate(range(1, 89)):
         epochs[:, i, :] = filteredEEG[0:19, i * n_samples_per_epoch:(i + 1) * n_samples_per_epoch]
     print(epochs.shape)
 
-    EEG_data = np.zeros((epochs.shape[0], epochs.shape[1], 2048))
+    EEG_data = np.zeros((epochs.shape[0], epochs.shape[1], 1000))
 
     for i in range(epochs.shape[1]):
-        EEG_data[:, i, 24:24 + 2000] = epochs[:, i, :]
+        EEG_data[:, i, 1000] = epochs[:, i, :]
 
     print(EEG_data.shape)
 
@@ -510,3 +510,4 @@ frank_copula_mat = compute_copula_matrix(epoch_data, frank_copula, initial_theta
 clayton_copula_mat = compute_copula_matrix(epoch_data, clayton_copula, initial_theta=0.5, bounds=[(0, 10)])
 
 """
+
