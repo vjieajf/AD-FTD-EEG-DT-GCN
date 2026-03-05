@@ -335,10 +335,10 @@ for sub_idx, sub_id in enumerate(range(1, 89)):
         epochs[:, i, :] = filteredEEG[0:19, i * n_samples_per_epoch:(i + 1) * n_samples_per_epoch]
     print(epochs.shape)
 
-    EEG_data = np.zeros((epochs.shape[0], epochs.shape[1], 2048))
+    EEG_data = np.zeros((epochs.shape[0], epochs.shape[1], 1000))
 
     for i in range(epochs.shape[1]):
-        EEG_data[:, i, 24:24 + 2000] = epochs[:, i, :]
+        EEG_data[:, i, 1000] = epochs[:, i, :]
 
     print(EEG_data.shape)
 
@@ -404,3 +404,4 @@ for sub_idx, sub_id in enumerate(range(1, 89)):
         # 添加一个空行以分隔不同的数组（可选）
 
         file.write("\n")
+
